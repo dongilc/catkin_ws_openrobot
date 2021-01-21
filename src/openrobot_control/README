@@ -1,0 +1,7 @@
+2021-01-14
+- Launch 파일로부터 param를 읽어받아서 port와 vesc수가 세팅되도록함
+- Todo) Teleinput 부분에 vh_ 받아서 쓰는 부분을 배열방식으로 만들고 udev 수도 param에서 받을 수 있게 해보기?
+
+2021-01-15
+- teleinput에서 vh_ 즉, teleopvesc의 배열타입 클래스 포인터를 vh_에 동적으로 할당하는 방법이 어려움.
+- 그냥 UDEV 는 최대 3개다 라고 가정하고 3개에 대한 것으로 작성함.

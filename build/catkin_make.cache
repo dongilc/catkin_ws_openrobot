@@ -1,0 +1,2 @@
+openrobot_control:openrobot_vesc_rosdriver/openrobot_vesc_driver:openrobot_vesc_rosdriver/openrobot_vesc_msgs
+-DCATKIN_DEVEL_PREFIX=/home/cdi/Dropbox/Workspace_CDI/workspace_prog/catkin_ws_openrobot_ex1/devel -DCMAKE_INSTALL_PREFIX=/home/cdi/Dropbox/Workspace_CDI/workspace_prog/catkin_ws_openrobot_ex1/install -G Unix Makefiles

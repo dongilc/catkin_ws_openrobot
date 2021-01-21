@@ -1,0 +1,8 @@
+prefix=/home/cdi/Dropbox/Workspace_CDI/workspace_prog/catkin_ws_openrobot_ex1/devel
+
+Name: openrobot_control_example
+Description: Description of openrobot_control_example
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib -lopenrobot_control_example
+Requires: joy roscpp std_msgs openrobot_vesc_msgs
