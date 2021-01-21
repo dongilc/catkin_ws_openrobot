@@ -1,8 +1,0 @@
-prefix=/home/cdi/Dropbox/Workspace_CDI/workspace_prog/catkin_ws_openrobot_ex1/install
-
-Name: openrobot_vesc_msgs
-Description: Description of openrobot_vesc_msgs
-Version: 0.0.1
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: std_msgs message_runtime
