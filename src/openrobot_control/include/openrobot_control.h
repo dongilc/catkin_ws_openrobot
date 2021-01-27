@@ -166,7 +166,7 @@ public:
 
 	TeleopInput(TeleopVesc *p_vesc1, TeleopVesc *p_vesc2, TeleopVesc *p_vesc3)
 	{	
-		vh1_ = p_vesc2;
+		vh1_ = p_vesc1;
 		vh2_ = p_vesc2;
 		vh3_ = p_vesc3;
 		joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &TeleopInput::joyCallback, this);
@@ -179,6 +179,22 @@ private:
 	
 	ros::NodeHandle nh_;
 	ros::Subscriber joy_sub_, keyboard_input_;
+};
+
+class TrapezoidalVelProfile
+{
+public:
+	float Amax;
+	float dt;
+
+	TrapezoidalVelProfile(float Acc_maximum, float DT)
+	{
+		Amax = Acc_maximum;
+		dt = DT;
+	}
+	void GenProfile(float v_ref, float *v_now);
+
+private:
 };
 
 #endif
