@@ -135,11 +135,14 @@ void TrapezoidalVelProfile::GenProfile(float v_ref, float *vout)
 void TeleopVesc::customsCallback(const openrobot_vesc_msgs::VescGetCustomApp::ConstPtr& custom_rx_msg)
 {
 #ifdef PRINT_SENSOR_CUSTOMS
+	int vesc_dev_number = 1;
+	vesc_dev_number = custom_rx_msg->can_devs_num + 1;
+
 	ROS_INFO("------------------------------------------");
 	ROS_INFO("header:%6.4f", custom_rx_msg->header.stamp.toSec());
-	ROS_INFO("vesc dev number:%d", custom_rx_msg->can_devs_num);
-
-	for(int i=0; i<this->NO_VESC; i++) {
+	ROS_INFO("vesc dev number:%d", vesc_dev_number);
+	
+	for(int i=0; i<vesc_dev_number; i++) {
 		ROS_INFO("---------< can id : %d >---------", custom_rx_msg->can_id[i]);
 		ROS_INFO("voltage input:%.1f V", custom_rx_msg->voltage_input[i]);
 		ROS_INFO("temperature pcb:%.1f C", custom_rx_msg->temperature_pcb[i]);
@@ -286,8 +289,8 @@ int main(int argc, char **argv)
 		//ROS_INFO("target_dps_1:%.2f, dps_1:%.2f, deg_1:%.2f", -value_goto, teleop_vesc1->rps[1]*RPS2DPS, teleop_vesc1->rad[1]*RAD2DEG);
 
 		// CAN Master Devs is directly connected to USB and it's ID should be set as TARGET_VESC_ID
-		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DUTY;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
-		teleop_vesc[0]->custom_cmd_value[0] = 0.;
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
+		teleop_vesc[0]->custom_cmd_value[0] = 100.;
 
 		//teleop_vesc[0]->controller_id[1] = 25;
 		//teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_CURRENT;//COMM_SET_CURRENT;//COMM_SET_OR_GOTO;
