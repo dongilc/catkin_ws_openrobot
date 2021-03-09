@@ -1,7 +1,7 @@
 <launch>
 <!-- Parameter Setting in Here, Max. three UDEV can be used -->
   <arg name="node_name" default="openrobot_vesc_driver_node0" />
-  <arg name="port0" default="/dev/ttyACM0" />
+  <arg name="port0" default="/dev/ttyACM1" />
   <arg name="baudrate0" default="115200bps" /> <!-- 9600bps, 115200bps, 921600bps -->
   <arg name="no_vesc0" default="1" />
 

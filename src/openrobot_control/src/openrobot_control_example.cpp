@@ -238,6 +238,7 @@ int main(int argc, char **argv)
   // loop freq
 //   int rate_hz = 500;	//hz
   int rate_hz = 50;	//hz
+  uint32_t cnt = 0;
 
   ros::NodeHandle nh("~");
   std::string port;
@@ -288,10 +289,22 @@ int main(int argc, char **argv)
 		//ROS_INFO("current_0:%.2f, dps_0:%.2f, deg_0:%.2f", value_goto, teleop_vesc1->rps[0]*RPS2DPS, teleop_vesc1->rad[0]*RAD2DEG);
 		//ROS_INFO("target_dps_1:%.2f, dps_1:%.2f, deg_1:%.2f", -value_goto, teleop_vesc1->rps[1]*RPS2DPS, teleop_vesc1->rad[1]*RAD2DEG);
 
+/*
+		// 5A(2min), 10A(1min) Cycle use
 		// CAN Master Devs is directly connected to USB and it's ID should be set as TARGET_VESC_ID
-		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
-		teleop_vesc[0]->custom_cmd_value[0] = 100.;
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_CURRENT;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
+		if(cnt>=0) 			teleop_vesc[0]->custom_cmd_value[0] = 5.;
+		if(cnt>=(50*120))	teleop_vesc[0]->custom_cmd_value[0] = 10.0;
+		if(cnt>=(50*180))	cnt = 0;
+		cnt++;
+		*/
 
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_CURRENT;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
+		if(cnt>=0) 		teleop_vesc[0]->custom_cmd_value[0] = 15.0;
+		if(cnt>=5)	teleop_vesc[0]->custom_cmd_value[0] = -15.0;
+		if(cnt>=10)	cnt = 0;
+		cnt++;
+				
 		//teleop_vesc[0]->controller_id[1] = 25;
 		//teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_CURRENT;//COMM_SET_CURRENT;//COMM_SET_OR_GOTO;
 		//teleop_vesc[0]->custom_cmd_value[1] = 0.;//0.5;
