@@ -27,7 +27,7 @@
 #define COMM_SET_HANDBRAKE		10
 
 // OpenRobot App
-#define TARGET_VESC_ID			255
+#define TARGET_VESC_ID_LOCAL	255
 
 // OpenRobot Custom COMM_SET Types
 typedef enum {
@@ -153,7 +153,7 @@ void TeleopVesc::customsCallback(const openrobot_vesc_msgs::VescGetCustomApp::Co
 		ROS_INFO("watt hours charged:%.4f Wh", custom_rx_msg->watt_hours_charged[i]);
 		ROS_INFO("duty:%.3f", custom_rx_msg->duty_cycle[i]);
 		ROS_INFO("accum. deg now:%.2f deg", custom_rx_msg->accum_deg_now[i]);
-		ROS_INFO("dps now:%.2f deg/sec", custom_rx_msg->diff_deg_now[i]/10000.);	// diff_deg_now(differential degree in 0.1ms)
+		ROS_INFO("erpm now:%.2f", custom_rx_msg->diff_deg_now[i]);
     }
 #endif
 }
@@ -277,7 +277,8 @@ int main(int argc, char **argv)
   //teleop_vesc3->startTime = ros::Time::now();
 
   // set VESC can id here
-  teleop_vesc[0]->controller_id[0] = TARGET_VESC_ID;
+  teleop_vesc[0]->controller_id[0] = TARGET_VESC_ID_LOCAL;
+  teleop_vesc[0]->controller_id[1] = 101;
 
   while (ros::ok())
   { 
@@ -299,16 +300,28 @@ int main(int argc, char **argv)
 		cnt++;
 		*/
 
-		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_CURRENT;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
-		if(cnt>=0) 		teleop_vesc[0]->custom_cmd_value[0] = 15.0;
-		if(cnt>=5)	teleop_vesc[0]->custom_cmd_value[0] = -15.0;
-		if(cnt>=10)	cnt = 0;
-		cnt++;
-				
 		//teleop_vesc[0]->controller_id[1] = 25;
 		//teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_CURRENT;//COMM_SET_CURRENT;//COMM_SET_OR_GOTO;
 		//teleop_vesc[0]->custom_cmd_value[1] = 0.;//0.5;
 
+		// set initial VMAX value here
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS_VMAX;
+		teleop_vesc[0]->custom_cmd_value[0] = 5000;
+		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS_VMAX;
+		teleop_vesc[0]->custom_cmd_value[1] = 5000;
+		teleop_vesc[0]->setCustomOut();
+
+		// set initial AMAX value here
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS_AMAX;
+		teleop_vesc[0]->custom_cmd_value[0] = 100000;
+		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS_AMAX;
+		teleop_vesc[0]->custom_cmd_value[1] = 100000;
+		teleop_vesc[0]->setCustomOut();
+
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_GOTO;
+		teleop_vesc[0]->custom_cmd_value[0] = 100;
+		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS;
+		teleop_vesc[0]->custom_cmd_value[1] = 2000;
 		if(teleop_vesc[0]->enable.data == true) teleop_vesc[0]->setCustomOut();
 
 		//ROS_INFO("rps_0:%.2f(dps_0:%.2f), rad_0:%.2f", teleop_vesc[0]->rps[0], teleop_vesc[0]->rps[0]*RPS2DPS, teleop_vesc[0]->rad[0]);
