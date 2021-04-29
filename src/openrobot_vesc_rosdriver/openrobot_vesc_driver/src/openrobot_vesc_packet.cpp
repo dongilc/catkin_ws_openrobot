@@ -597,7 +597,10 @@ VescPacketSetCustomAppData::VescPacketSetCustomAppData(const openrobot_vesc_msgs
         case COMM_SET_DPS_AMAX:
           v = static_cast<int32_t>(custom_set_msg->value_set[i] * 1000.0);
           break;
-        case COMM_SET_GOTO:
+        case COMM_SET_SERVO:
+          v = static_cast<int32_t>(custom_set_msg->value_set[i] * 1000.0);
+          break;
+        case COMM_SET_TRAJ:
           v = static_cast<int32_t>(custom_set_msg->value_set[i] * 1000.0);
           break;
         case COMM_SET_RELEASE:

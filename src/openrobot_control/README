@@ -9,3 +9,6 @@
 2021-01-23
 - Todo) can 장치들쪽에서 오는 position data가 그냥 pid_pos인거 수정
 - Todo) duty, current, dps 모드 seamless 변환 test
+
+2021-04-19
+- TODO : DEV 여러개써서 하는거 namespace인가 쓰면 쉽게 해결되는데 이부분 수정
