@@ -144,17 +144,25 @@ void TeleopVesc::customsCallback(const openrobot_vesc_msgs::VescGetCustomApp::Co
 	ROS_INFO("vesc dev number:%d", vesc_dev_number);
 	
 	for(int i=0; i<vesc_dev_number; i++) {
-		ROS_INFO("---------< can id : %d >---------", custom_rx_msg->can_id[i]);
-		ROS_INFO("voltage input:%.1f V", custom_rx_msg->voltage_input[i]);
-		ROS_INFO("temperature pcb:%.1f C", custom_rx_msg->temperature_pcb[i]);
-		ROS_INFO("temperature motor:%.1f C", custom_rx_msg->temperature_motor[i]);
-		ROS_INFO("current motor:%.2f A", custom_rx_msg->current_motor[i]);
-		ROS_INFO("current input:%.2f A", custom_rx_msg->current_input[i]);
-		ROS_INFO("watt hours:%.4f Wh", custom_rx_msg->watt_hours[i]);
-		ROS_INFO("watt hours charged:%.4f Wh", custom_rx_msg->watt_hours_charged[i]);
-		ROS_INFO("duty:%.3f", custom_rx_msg->duty_cycle[i]);
-		ROS_INFO("accum. deg now:%.2f deg", custom_rx_msg->accum_deg_now[i]);
-		ROS_INFO("rps now:%.2f", custom_rx_msg->diff_deg_now[i]);
+		if(i == 0) {
+			ROS_INFO("---------< can id : %d (Local) >---------", custom_rx_msg->can_id[i]);
+			ROS_INFO("voltage input:%.1f V", custom_rx_msg->voltage_input[i]);
+			ROS_INFO("temperature pcb:%.1f C", custom_rx_msg->temperature_pcb[i]);
+			ROS_INFO("temperature motor:%.1f C", custom_rx_msg->temperature_motor[i]);
+			ROS_INFO("current motor:%.2f A", custom_rx_msg->current_motor[i]);
+			ROS_INFO("current input:%.2f A", custom_rx_msg->current_input[i]);
+			ROS_INFO("watt hours:%.4f Wh", custom_rx_msg->watt_hours[i]);
+			ROS_INFO("watt hours charged:%.4f Wh", custom_rx_msg->watt_hours_charged[i]);
+			ROS_INFO("duty:%.3f", custom_rx_msg->duty_cycle[i]);
+			ROS_INFO("accum. deg now:%.2f deg", custom_rx_msg->accum_deg_now[i]);
+			ROS_INFO("rps now:%.2f", custom_rx_msg->diff_deg_now[i]);
+		}
+		else {
+			ROS_INFO("---------< can id : %d >---------", custom_rx_msg->can_id[i]);
+			ROS_INFO("current motor:%.2f A", custom_rx_msg->current_motor[i]);
+			ROS_INFO("accum. deg now:%.2f deg", custom_rx_msg->accum_deg_now[i]*RAD2DEG);
+			ROS_INFO("rps now:%.2f", custom_rx_msg->diff_deg_now[i]);
+		}
     }
 #endif
 }
@@ -310,14 +318,14 @@ int main(int argc, char **argv)
 
 		// set initial VMAX value here
 		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_DPS_VMAX;
-		teleop_vesc[0]->custom_cmd_value[0] = 1000;
+		teleop_vesc[0]->custom_cmd_value[0] = 5000;
 		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS_VMAX;
-		teleop_vesc[0]->custom_cmd_value[1] = 1000;
+		teleop_vesc[0]->custom_cmd_value[1] = 5000;
 		teleop_vesc[0]->setCustomOut();
 
-		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_RELEASE;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_SERVO;//COMM_SET_TRAJ
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_TRAJ;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_SERVO;//COMM_SET_TRAJ
 		teleop_vesc[0]->custom_cmd_value[0] = 0;	//100dps
-		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS;
+		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_TRAJ;
 		teleop_vesc[0]->custom_cmd_value[1] = 0;	//2000dps
 		if(teleop_vesc[0]->enable.data == true) teleop_vesc[0]->setCustomOut();
 
