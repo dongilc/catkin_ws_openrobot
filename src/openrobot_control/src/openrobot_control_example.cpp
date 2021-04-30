@@ -281,6 +281,9 @@ int main(int argc, char **argv)
   teleop_vesc[0]->controller_id[0] = TARGET_VESC_ID_LOCAL;
   teleop_vesc[0]->controller_id[1] = 101;
 
+  bool send_param_flag = false;
+  bool send_data_flag = false;
+
   while (ros::ok())
   { 
 		// read encoder data.
@@ -312,7 +315,7 @@ int main(int argc, char **argv)
 		teleop_vesc[0]->custom_cmd_value[1] = 1000;
 		teleop_vesc[0]->setCustomOut();
 
-		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_TRAJ;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_SERVO;//COMM_SET_TRAJ
+		teleop_vesc[0]->custom_cmd_type[0] = COMM_SET_RELEASE;//COMM_SET_RELEASE;COMM_SET_DPS;COMM_SET_DUTY;//COMM_SET_SERVO;//COMM_SET_TRAJ
 		teleop_vesc[0]->custom_cmd_value[0] = 0;	//100dps
 		teleop_vesc[0]->custom_cmd_type[1] = COMM_SET_DPS;
 		teleop_vesc[0]->custom_cmd_value[1] = 0;	//2000dps
